@@ -11,12 +11,24 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/crowdsale/emission/MintedCrowdsale.sol";
 
 contract SnackCoinMenu is Crowdsale, MintedCrowdsale{
-
+    
+    // Create constructor for SnackCoinMenu
     constructor(
         uint rate,
         address payable wallet,
         SnackCoin token
     ) public Crowdsale(rate, wallet, token) {}
+
+    // Create an event to log submitted orders
+    event NewOrder(string items[], uint order_total)
+
+    // Function that places a new order
+    function orderSnack(string items[], uint order_total) public payable{
+
+        // Log NewOrder event with item details
+        emit NewOrder(items, order_total)
+
+    }
 
 }
 
