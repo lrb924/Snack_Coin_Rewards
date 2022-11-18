@@ -20,13 +20,22 @@ contract SnackCoinMenu is Crowdsale, MintedCrowdsale{
     ) public Crowdsale(rate, wallet, token) {}
 
     // Create an event to log submitted orders
-    event NewOrder(string items[], uint order_total)
+    event NewOrder(string[] items, uint order_total);
 
     // Function that places a new order
-    function orderSnack(string items[], uint order_total) public payable{
+    function orderSnack(string[] memory items, uint order_total) public payable{
+
+        // Add if/else for order total & token quantity requirements
+        // e.g.
+        // if amount not enough
+        // requir( x,y )
+        // transfer(from msg.sender to contract owner)
+
+        // Call the buyTokens function from Crowdsale ERC20
+        buyTokens(msg.sender);
 
         // Log NewOrder event with item details
-        emit NewOrder(items, order_total)
+        emit NewOrder(items, order_total);
 
     }
 
