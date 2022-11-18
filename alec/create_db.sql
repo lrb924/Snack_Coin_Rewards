@@ -46,10 +46,13 @@ CREATE TABLE IF NOT EXISTS Orders (
 DROP TABLE IF EXISTS OrderItems;
 CREATE TABLE IF NOT EXISTS OrderItems (
     order_id INTEGER,
+    food_id INTEGER,
     menu_id INTEGER,
     quantity INTEGER,
-    price FLOAT,
+    unit_price FLOAT,
+    item_total FLOAT,
     FOREIGN KEY (order_id) REFERENCES Orders(id),
+    FOREIGN KEY (food_id) REFERENCES Food(id),
     FOREIGN KEY (menu_id) REFERENCES Menus(id)
 );
 
