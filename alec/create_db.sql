@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Food (
     about TEXT,
     category TEXT,
     image TEXT,
-    unitprice FLOAT
+    unit_price FLOAT
 );
 
 DROP TABLE IF EXISTS MenuItems;
@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS Orders;
 CREATE TABLE IF NOT EXISTS Orders (
     id INTEGER PRIMARY KEY,
     customer_id INTEGER,
-    total FLOAT,
+    order_total FLOAT,
     time DATETIME,
     FOREIGN KEY (customer_id) REFERENCES Customers(id)
 );
@@ -49,7 +49,6 @@ CREATE TABLE IF NOT EXISTS OrderItems (
     food_id INTEGER,
     menu_id INTEGER,
     quantity INTEGER,
-    unit_price FLOAT,
     item_total FLOAT,
     FOREIGN KEY (order_id) REFERENCES Orders(id),
     FOREIGN KEY (food_id) REFERENCES Food(id),
@@ -59,8 +58,10 @@ CREATE TABLE IF NOT EXISTS OrderItems (
 DROP TABLE IF EXISTS Rewards;
 CREATE TABLE IF NOT EXISTS Rewards (
     customer_id INTEGER,
+    order_id INTEGER,
     snak_tokens FLOAT,
-    FOREIGN KEY (customer_id) REFERENCES Customers(id)
+    FOREIGN KEY (customer_id) REFERENCES Customers(id),
+    FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
 
 END;

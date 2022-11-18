@@ -6,7 +6,7 @@ insert into Menus (id)
 values
         (1);
 
-insert into Food (name, about, category, image, unitprice)
+insert into Food (name, about, category, image, unit_price)
 values
         ("Hotdog", "No ketchup", "Entree", "./Images/hotdog.png", 0.004),
         ("Pizza", "One slice", "Entree", "./Images/pizza.png", 0.006),
