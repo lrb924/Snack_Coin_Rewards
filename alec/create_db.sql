@@ -1,18 +1,23 @@
+/* Creates snack.db table structure */
+
 BEGIN;
 
+DROP TABLE IF EXISTS Menus;
 CREATE TABLE IF NOT EXISTS Menus (
     id INTEGER PRIMARY KEY
 );
 
+DROP TABLE IF EXISTS Food;
 CREATE TABLE IF NOT EXISTS Food (
     id INTEGER PRIMARY KEY,
     name TEXT,
     about TEXT,
     category TEXT,
-    picture TEXT,
+    image TEXT,
     unitprice FLOAT
 );
 
+DROP TABLE IF EXISTS MenuItems;
 CREATE TABLE IF NOT EXISTS MenuItems (
     menu_id INTEGER,
     food_id INTEGER,
@@ -20,6 +25,7 @@ CREATE TABLE IF NOT EXISTS MenuItems (
     FOREIGN KEY (food_id) REFERENCES Food(id)
 );
 
+DROP TABLE IF EXISTS Customers;
 CREATE TABLE IF NOT EXISTS Customers (
     id INTEGER PRIMARY KEY,
     first_name TEXT,
@@ -28,6 +34,7 @@ CREATE TABLE IF NOT EXISTS Customers (
     email TEXT
 );
 
+DROP TABLE IF EXISTS Orders;
 CREATE TABLE IF NOT EXISTS Orders (
     id INTEGER PRIMARY KEY,
     customer_id INTEGER,
@@ -36,6 +43,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     FOREIGN KEY (customer_id) REFERENCES Customers(id)
 );
 
+DROP TABLE IF EXISTS OrderItems;
 CREATE TABLE IF NOT EXISTS OrderItems (
     order_id INTEGER,
     menu_id INTEGER,
@@ -45,6 +53,7 @@ CREATE TABLE IF NOT EXISTS OrderItems (
     FOREIGN KEY (menu_id) REFERENCES Menus(id)
 );
 
+DROP TABLE IF EXISTS Rewards;
 CREATE TABLE IF NOT EXISTS Rewards (
     customer_id INTEGER,
     snak_tokens FLOAT,

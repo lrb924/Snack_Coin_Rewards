@@ -8,6 +8,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 import sqlite3
+# import pandas as pd
 
 from web3 import Web3
 
@@ -44,9 +45,20 @@ def load_contract():
 # contract = load_contract()
 
 
-# Menu database
+# Load menu database
 con = sqlite3.connect('snack.db')
 cur = con.cursor()
+
+res = cur.execute(
+    '''
+    SELECT * FROM Food
+    '''
+).fetchall()
+
+for row in res:
+    id_, name_, about_, category_, picture_, unitprice_ = row
+    print(name_)
+
 
 '''
 st.markdown("# Snack Menu")
@@ -54,7 +66,7 @@ st.markdown("## ...")
 st.text("\n")
 st.text("\n")
 
-def get_menu():
+def display_menu():
     pass
 
 st.markdown("## Order Food")

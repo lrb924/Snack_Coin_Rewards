@@ -1,11 +1,12 @@
-BEGIN;
+/* Inserts menu data into snack.db */
 
+BEGIN;
 
 insert into Menus (id)
 values
         (1);
 
-insert into Food (name, about, category, picture, unitprice)
+insert into Food (name, about, category, image, unitprice)
 values
         ("Hotdog", "No ketchup", "Entree", "./Images/hotdog.png", 0.004),
         ("Pizza", "One slice", "Entree", "./Images/pizza.png", 0.006),
