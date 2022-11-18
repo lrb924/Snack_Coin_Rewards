@@ -1,21 +1,46 @@
-import streamlit as st
+# SnackCoin Streamlit WebApp
 
+
+# Imports
 import os
 import json
 from pathlib import Path
 from dotenv import load_dotenv
 
-# from sqlalchemy import create_engine
-# import psycopg2
-# import connectorx as cx
-
 from web3 import Web3
 
+import streamlit as st
+
+
+# Load .env
 load_dotenv()
 
-web3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
+# Create Web3 instance with Ganache URI
+web3 = Web3(Web3.HTTPProvider(os.getenv("WEB_PROVIDER_URI")))
 
+# Get the acccounts from Ganache
 accounts = generate_accounts(web3)
+
+
+# Load the contract
+@st.cache(allow_output_mutation=True)
+def load_contract():
+    
+    with open(Path("abi.json")) as abi_:
+        abi = json.load(abi_)
+
+    contract_address = os.getenv("SMART_CONTRACT_DEPLOYED_ADDRESS")
+
+    contract = w3.eth.contract(
+        address = contract_address,
+        abi = abi
+    )
+    
+    return contract
+
+
+contract = load_contract()
+
 
 # Menu database
 
