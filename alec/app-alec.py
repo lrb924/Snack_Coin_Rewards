@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 from dotenv import load_dotenv
 
+import sqlite3
+
 from web3 import Web3
 
 import streamlit as st
@@ -16,38 +18,37 @@ import streamlit as st
 load_dotenv()
 
 # Create Web3 instance with Ganache URI
-web3 = Web3(Web3.HTTPProvider(os.getenv("WEB_PROVIDER_URI")))
+# w3 = Web3(Web3.HTTPProvider(os.getenv("WEB_PROVIDER_URI")))
 
 # Get the acccounts from Ganache
-accounts = generate_accounts(web3)
+# accounts = w3.eth.accounts
 
 
 # Load the contract
 @st.cache(allow_output_mutation=True)
 def load_contract():
-    
+
     with open(Path("abi.json")) as abi_:
         abi = json.load(abi_)
 
     contract_address = os.getenv("SMART_CONTRACT_DEPLOYED_ADDRESS")
 
     contract = w3.eth.contract(
-        address = contract_address,
-        abi = abi
+        address=contract_address,
+        abi=abi
     )
-    
+
     return contract
 
 
-contract = load_contract()
+# contract = load_contract()
 
 
 # Menu database
+con = sqlite3.connect('snack.db')
+cur = con.cursor()
 
-#db1 = "postgresql://postgres:8264@localhost:5432/nu_week7"
-#menu_items = cx.read_sql(db1, "select * from address")
-
-
+'''
 st.markdown("# Snack Menu")
 st.markdown("## ...")
 st.text("\n")
@@ -77,3 +78,4 @@ for x in cart.keys():
     
     cart_total +=  cart[x][0] * cart[x][1]
 
+'''
