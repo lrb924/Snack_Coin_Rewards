@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS MenuItems (
 DROP TABLE IF EXISTS Customers;
 CREATE TABLE IF NOT EXISTS Customers (
     id INTEGER PRIMARY KEY,
+    wallet TEXT,
     first_name TEXT,
     last_name TEXT,
     phone INTEGER,

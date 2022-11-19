@@ -45,30 +45,43 @@ def load_contract():
 # contract = load_contract()
 
 
-# Load menu sqlite database
-con = sqlite3.connect('snack.db')
-cur = con.cursor()
-
-res = cur.execute(
-    '''
-    SELECT * FROM Food
-    '''
-).fetchall()
-
-for row in res:
-    id_, name_, about_, category_, picture_, unitprice_ = row
-    print(name_)
-
-
-'''
+# Load menu database
 st.markdown("# Snack Menu")
 st.markdown("## ...")
 st.text("\n")
 st.text("\n")
 
-def display_menu():
-    pass
+con = sqlite3.connect('snack.db')
+cur = con.cursor()
 
+
+# Display the menu with streamlit
+def display_menu():
+
+    # Get all the rows in Food table
+    #   that are in Menu1
+    res = cur.execute(
+        '''
+        SELECT * FROM Food
+        WHERE id IN (
+            SELECT food_id from MenuItems
+            WHERE menu_id = 1
+        );
+        '''
+    ).fetchall()
+
+    for row in res:
+        id_, name_, about_, category_, image_, unit_price_ = row
+
+        st.image(image_, width=200)
+        st.markdown(f'### {name_}')
+        st.markdown(f'{about_}')
+        st.markdown(f'{unit_price_} ETH')
+
+
+display_menu()
+
+'''
 st.markdown("## Order Food")
 st.text("\n")
 
