@@ -45,7 +45,7 @@ def load_contract():
 # contract = load_contract()
 
 
-# Load menu database
+# Load menu sqlite database
 con = sqlite3.connect('snack.db')
 cur = con.cursor()
 
@@ -78,16 +78,16 @@ order_item = st.selectbox("Select a Person", menu_items)
 order_quantity = st.sidebar.number_input("Enter quantity:")
 
 if st.button("Add to Cart"):
-    
+
     # order_item: [quantity, price]
     # {'Hot dogs': [1, 0.001], 'Burger': [2, 0.002]}
     cart[order_item] = [order_quantity, menu_items[order_item]]
 
-    
+
 cart_total = 0
 
 for x in cart.keys():
-    
+
     cart_total +=  cart[x][0] * cart[x][1]
 
 '''

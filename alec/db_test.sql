@@ -19,6 +19,7 @@ values
 
 select * from Customers;
 
+
 insert into Orders (customer_id, order_total, time)
 values
         (1, 0.012, datetime('now'));
@@ -32,13 +33,10 @@ values
 
 select * from OrderItems;
 
-delete from Rewards
-where customer_id = 1;
-
 
 insert into Rewards (customer_id, order_id, snak_tokens)
 values
-        (1, 1, 0.12);
+        (1, 1, 12.0);
 
 select * from Rewards;
 
