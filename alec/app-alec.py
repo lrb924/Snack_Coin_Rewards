@@ -3,9 +3,13 @@
 
 # Imports
 import os
+from ast import Num
+
+
 import json
 from pathlib import Path
 from dotenv import load_dotenv
+import datetime
 
 import sqlite3
 # import pandas as pd
@@ -51,9 +55,11 @@ st.markdown("## ...")
 st.text("\n")
 st.text("\n")
 
-con = sqlite3.connect('snack.db')
+con = sqlite3.connect('snack.db', timeout=10)
 cur = con.cursor()
 
+
+menu_items = dict()
 
 # Display the menu with streamlit
 def display_menu():
@@ -73,6 +79,8 @@ def display_menu():
     for row in res:
         id_, name_, about_, category_, image_, unit_price_ = row
 
+        menu_items[name_] = [id_, about_, category_, image_, unit_price_]
+
         st.image(image_, width=200)
         st.markdown(f'### {name_}')
         st.markdown(f'{about_}')
@@ -81,26 +89,86 @@ def display_menu():
 
 display_menu()
 
-'''
+
 st.markdown("## Order Food")
+st.text("\n")
 st.text("\n")
 
 cart = dict()
 
-order_item = st.selectbox("Select a Person", menu_items)
-order_quantity = st.sidebar.number_input("Enter quantity:")
+if st.button("Start an order"):
+    
+    query = "INSERT INTO Orders (customer_id, order_total, time) VALUES (1, 0.000, datetime('now'))"
+    cur.execute(query)
+    con.commit()
+    
+    st.write("Order started. Add items to cart below..")
 
-if st.button("Add to Cart"):
 
-    # order_item: [quantity, price]
-    # {'Hot dogs': [1, 0.001], 'Burger': [2, 0.002]}
-    cart[order_item] = [order_quantity, menu_items[order_item]]
+def place_order(num):
+    
+    key1 = num
+    key2 = num + 3
+    
+    order_item = st.selectbox("Select an item", menu_items, key=key1)
+    item_quantity = st.number_input("Enter quantity:", min_value=1, key=key2)
+    
+    if st.button(f"Add item #{num} Cart"):
+        
+        query = "SELECT id FROM Orders ORDER BY id DESC LIMIT 1 OFFSET 0"
+        res = cur.execute(query)
+        
+        
+        for row in res:
+            order_id = int(str(row).strip('(,)'))
+            
+        st.write(order_id)
+
+        item_total = menu_items[order_item][4] * item_quantity
+        
+        cart[order_item] = [order_item, item_quantity]
+        
+        query = '''
+                INSERT INTO OrderItems (order_id, food_id, menu_id, quantity, item_total)
+                VALUES
+                        (:order_id_, :food_id_, 1, :item_quantity_, :item_total_)
+                '''
+        params = {
+            "order_id_": order_id,
+            "food_id_": menu_items[order_item][0],
+            "item_quantity_": item_quantity,
+            "item_total_": item_total
+        }
+        
+        cur.execute(query, params)
+        
+        for x in cart.keys():
+            
+            query = f"SELECT order_total FROM Orders WHERE id = {order_id}"
+            cur.execute(query)
+            order_total = float(str(row).strip('(,)'))            
+            
+            
+            
+            price = menu_items[cart[x][0]][4]
+            cart_total = order_total + cart[x][1] * price
+            st.write(cart_total)
+            query = f"UPDATE Orders SET order_total = {cart_total} WHERE id = {order_id}"
+            cur.execute(query)
+            con.commit()
 
 
-cart_total = 0
+place_order(1)
+place_order(2)
+place_order(3)
 
-for x in cart.keys():
+# query = "SELECT order_total FROM Orders WHERE id = :order_id_"
+# params = {'order_total_': cart_total, 'order_id_':order_id}
+# res = cur.execute(query, params)
 
-    cart_total +=  cart[x][0] * cart[x][1]
+# for row in res:
+#     order_total = float(str(row).strip('(,)'))
 
-'''
+# st.markdown(f'## Cart Total: {order_total}')
+
+con.close()

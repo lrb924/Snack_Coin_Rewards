@@ -15,12 +15,20 @@ values
 select * from Customers;
 
 
-insert into Orders (customer_id, order_total, time)
+insert into Orders (customer_id, time)
 values
-        (1, 0.012, datetime('now'));
+        (1, datetime('now'));
 
 select * from Orders;
 
+SELECT order_total FROM Orders WHERE id = 16
+
+SELECT id FROM Orders ORDER BY id DESC LIMIT 1 OFFSET 0
+
+SELECT order_total FROM Orders WHERE id = 27
+
+delete from Orders
+where id >0;
 
 insert into OrderItems (order_id, menu_id, food_id, quantity, item_total)
 values

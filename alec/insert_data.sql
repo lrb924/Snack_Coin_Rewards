@@ -8,11 +8,11 @@ values
 
 insert into Food (name, about, category, image, unit_price)
 values
-        ("Hotdog", "No ketchup", "Entree", "./Images/hotdog.png", 0.004),
-        ("Pizza", "One slice", "Entree", "./Images/pizza.png", 0.006),
-        ("Fries", "Salty!", "Side", "./Images/fries.png", 0.002),
-        ("Milkshake", "Chocolate & Vanilla", "Drink", "./Images/shake.png", 0.005),
-        ("Cake", "Chocolate ganache", "Desert", "./Images/truffle.png", 0.003);
+        ("Hotdog", "No ketchup", "Entree", "./Images/hotdog.jpeg", 0.004),
+        ("Pizza", "One slice", "Entree", "./Images/pizza.jpeg", 0.006),
+        ("Fries", "Salty!", "Side", "./Images/fries.jpeg", 0.002),
+        ("Milkshake", "Chocolate & Vanilla", "Drink", "./Images/milkshake.jpg", 0.005),
+        ("Cake", "Chocolate ganache", "Desert", "./Images/ganache_cake.jpg", 0.003);
 
 insert into MenuItems (menu_id, food_id)
 values
