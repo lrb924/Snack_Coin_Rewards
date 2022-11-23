@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS Customers (
     first_name TEXT,
     last_name TEXT,
     phone INTEGER,
-    email VARCHAR
+    email TEXT
 );
 
 DROP TABLE IF EXISTS Orders;
@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     customer_id INTEGER,
     order_total FLOAT,
     time DATETIME,
+    completed BOOLEAN,
     FOREIGN KEY (customer_id) REFERENCES Customers(id)
 );
 
