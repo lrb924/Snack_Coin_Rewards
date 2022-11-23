@@ -5,7 +5,7 @@
 pragma solidity ^0.5.0;
 
 // Import SnackCoin contract
-import "./SnackCoin-alec.sol";
+import "./SnackCoin-lara.sol";
 
 //  Import the following contracts from the OpenZeppelin library:
 //    * Crowdsale
@@ -23,10 +23,10 @@ contract SnackCoinMenu is Crowdsale, MintedCrowdsale{
     ) public Crowdsale(rate, wallet, token) {}
 
     // Create an event to log submitted orders
-    event NewOrder(string[] items, uint order_total);
+    event NewOrder(uint order_total);
 
     // Function that places a new order
-    function orderSnack(string[] memory items, uint order_total) public payable{
+    function orderSnack(uint order_total) public payable{
 
         // Add if/else for order total & token quantity requirements
         // e.g.
@@ -38,7 +38,7 @@ contract SnackCoinMenu is Crowdsale, MintedCrowdsale{
         buyTokens(msg.sender);
 
         // Log NewOrder event with item details
-        emit NewOrder(items, order_total);
+        emit NewOrder(order_total);
 
     }
 
@@ -52,8 +52,8 @@ contract SnackCoinMenuDeployer{
     address public snackcoin_menu_address;
 
     constructor(
-        string memory name = "SnackCoin",
-        string memory symbol = "SNAK",
+        string memory name,
+        string memory symbol,
         address payable wallet
     ) public {
 
