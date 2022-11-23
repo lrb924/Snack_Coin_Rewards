@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS Customers (
     first_name TEXT,
     last_name TEXT,
     phone INTEGER,
-    email TEXT
+    email VARCHAR
 );
 
 DROP TABLE IF EXISTS Orders;

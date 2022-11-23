@@ -9,7 +9,6 @@ from ast import Num
 import json
 from pathlib import Path
 from dotenv import load_dotenv
-import datetime
 
 import sqlite3
 # import pandas as pd
@@ -23,10 +22,11 @@ import streamlit as st
 load_dotenv()
 
 # Create Web3 instance with Ganache URI
-# w3 = Web3(Web3.HTTPProvider(os.getenv("WEB_PROVIDER_URI")))
+w3 = Web3(Web3.HTTPProvider(os.getenv("WEB_PROVIDER_URI")))
+# st.write(w3.)
 
 # Get the acccounts from Ganache
-# accounts = w3.eth.accounts
+accounts = w3.eth.accounts
 
 
 # Load the contract
@@ -48,16 +48,36 @@ def load_contract():
 
 # contract = load_contract()
 
-
 # Load menu database
+con = sqlite3.connect('snack.db', timeout=10)
+cur = con.cursor()
+
+# Load Menu
 st.markdown("# Snack Menu")
 st.markdown("## ...")
 st.text("\n")
 st.text("\n")
 
-con = sqlite3.connect('snack.db', timeout=10)
-cur = con.cursor()
+# Choose customer wallet
+st.sidebar.markdown("## Please Enter Customer Info:")
 
+wallet = st.sidebar.selectbox(label='Etherium Wallet: ', options=accounts)
+
+# Ask for customer info
+customer_first = st.sidebar.text_input('First Name: ', key=1)
+customer_last = st.sidebar.text_input('Last Name: ', key=2)
+customer_phone = st.sidebar.text_input('Phone: ', key=3)
+customer_email = st.sidebar.text_input('Email: ', key=4)
+
+if st.sidebar.button('Add Customer'):
+    # query = f"INSERT INTO Customers VALUES (1, {wallet}, {customer_first}, {customer_last}, {int(customer_phone)}, {str(customer_email)})"
+    # query = f"INSERT INTO Customers VALUES (1, :wallet, :customer_first, :customer_last, :customer_phone, {str(customer_email)})"
+    
+    query = "INSERT INTO Customers ('wallet', 'first_name', 'last_name', 'phone', 'email') VALUES(?,?,?,?,?)"
+    params = (wallet, customer_first, customer_last, customer_phone, customer_email)
+    
+    cur.execute(query, params)
+    con.commit()
 
 menu_items = dict()
 
@@ -98,14 +118,14 @@ cart = dict()
 
 if st.button("Start an order"):
     
-    query = "INSERT INTO Orders (customer_id, order_total, time) VALUES (1, 0.000, datetime('now'))"
+    query = f"INSERT INTO Orders (wallet, order_total, time) VALUES ({wallet}, 0.000, datetime('now'))"
     cur.execute(query)
     con.commit()
     
     st.write("Order started. Add items to cart below..")
 
 
-def place_order(num):
+def add_to_order(num):
     
     key1 = num
     key2 = num + 3
@@ -145,22 +165,23 @@ def place_order(num):
         for x in cart.keys():
             
             query = f"SELECT order_total FROM Orders WHERE id = {order_id}"
-            cur.execute(query)
-            order_total = float(str(row).strip('(,)'))            
+            res = cur.execute(query)
             
+            for row in res:
+                order_total = float(str(row).strip('(,)'))       
             
             
             price = menu_items[cart[x][0]][4]
-            cart_total = order_total + cart[x][1] * price
+            cart_total = order_total + cart[x][1] * float(price)
             st.write(cart_total)
             query = f"UPDATE Orders SET order_total = {cart_total} WHERE id = {order_id}"
             cur.execute(query)
             con.commit()
 
 
-place_order(1)
-place_order(2)
-place_order(3)
+add_to_order(5)
+add_to_order(6)
+add_to_order(7)
 
 # query = "SELECT order_total FROM Orders WHERE id = :order_id_"
 # params = {'order_total_': cart_total, 'order_id_':order_id}
@@ -170,5 +191,28 @@ place_order(3)
 #     order_total = float(str(row).strip('(,)'))
 
 # st.markdown(f'## Cart Total: {order_total}')
+
+# st.markdown(f'## Place Order: ')
+# st.text("\n")
+
+# query = "SELECT id FROM Orders ORDER BY id DESC LIMIT 1 OFFSET 0"
+# res = cur.execute(query)
+# for row in res:
+#     order_id = int(str(row).strip('(,)'))
+
+# query = f"SELECT order_total FROM Orders WHERE id = {order_id}"
+# res = cur.execute(query)
+# for row in res:
+#     order_total = float(str(row).strip('(,)')) 
+
+# st.write(order_id)
+# st.write(order_total)
+
+# if st.button('Pay for order'):
+
+
+
+
+
 
 con.close()
