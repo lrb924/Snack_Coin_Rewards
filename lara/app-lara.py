@@ -32,12 +32,12 @@ def load_contract(which_contract):
 
     # contract_address = os.getenv("SMART_CONTRACT_DEPLOYED_ADDRESS")
     if which_contract == 'menu':
-        contract_address = '0x8021d1Df71a8a106EC78Fec5a893527FAe51013f'
+        contract_address = '0x4C43bE5B4f999467484d935429AE795C3197A86a'
         with open(Path("abi-menu.json")) as abi_:
             abi = json.load(abi_)
     
     elif which_contract == 'token':
-        contract_address = '0xd0d20497138707b94C2c781d80f4Da41FD7426dE'
+        contract_address = '0xcbE2cCf28000F806E71dC0310D0ba3137197579c'
         with open(Path("abi-token.json")) as abi_:
             abi = json.load(abi_)
 
@@ -82,8 +82,12 @@ if st.sidebar.button('Add Customer'):
 
 menu_items = dict()
 
+col1, col2 = st.columns(2)
+
 # Display the menu with streamlit
 def display_menu():
+    
+    counter = 0
 
     # Get all the rows in Food table
     #   that are in Menu1
@@ -98,15 +102,23 @@ def display_menu():
     ).fetchall()
 
     for row in res:
+        counter += 1
         id_, name_, about_, category_, image_, unit_price_ = row
 
         menu_items[name_] = [id_, about_, category_, image_, unit_price_]
 
-        st.image(image_, width=200)
-        st.markdown(f'### {name_}')
-        st.markdown(f'{about_}')
-        st.markdown(f'{unit_price_} ETH')
-
+        if counter < 4:
+            with col1:
+                st.image(image_, width=200)
+                st.markdown(f'### {name_}')
+                st.markdown(f'{about_}')
+                st.markdown(f'{unit_price_} ETH')
+        else:
+            with col2:
+                st.image(image_, width=200)
+                st.markdown(f'### {name_}')
+                st.markdown(f'{about_}')
+                st.markdown(f'{unit_price_} ETH')
 
 display_menu()
 
