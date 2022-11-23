@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     customer_id INTEGER,
     order_total FLOAT,
     time DATETIME,
+    completed BOOLEAN,
     FOREIGN KEY (customer_id) REFERENCES Customers(id)
 );
 

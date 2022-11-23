@@ -49,5 +49,6 @@ where id in (
     select food_id from MenuItems
     where menu_id = 1);
 
+SELECT id, customer_id FROM Orders ORDER BY id DESC LIMIT 1 OFFSET 0
 
 END;
