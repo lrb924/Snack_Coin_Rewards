@@ -32,12 +32,12 @@ def load_contract(which_contract):
 
     # contract_address = os.getenv("SMART_CONTRACT_DEPLOYED_ADDRESS")
     if which_contract == 'menu':
-        contract_address = '0x4C43bE5B4f999467484d935429AE795C3197A86a'
+        contract_address = '0xb452723FD48E2c23e6fcA8f276b204EB93a49E9a'
         with open(Path("abi-menu.json")) as abi_:
             abi = json.load(abi_)
     
     elif which_contract == 'token':
-        contract_address = '0xcbE2cCf28000F806E71dC0310D0ba3137197579c'
+        contract_address = '0xF5dBD77512fd738f6829C2E49A794043DaEB1962'
         with open(Path("abi-token.json")) as abi_:
             abi = json.load(abi_)
 
@@ -125,6 +125,8 @@ display_menu()
 st.markdown("## Order Food")
 st.text("\n")
 
+st.text("Please click Start an Order and then begin adding items to your cart.")
+
 cart = dict()
 
 if st.button("Start an order"):
@@ -209,18 +211,33 @@ if st.button("Place Order"):
         wallet = str(row).strip("(,')")
 
     order_total_wei = w3.toWei(Decimal(order_total), 'ether')
+    token_amount = int(order_total * 1000)
     
-    st.write(f"Contract address: {contract.address}")
+    
     st.write(f"Paying {order_total} ETH from wallet: {wallet}")
 
     # Submit transaction to contract
-    txn_hash = contract.functions.orderSnack(order_total_wei).transact({
+    txn_hash = contract.functions.orderSnack(order_total_wei, token_amount).transact({
         'from': wallet,
         'value': order_total_wei
     })
     receipt = w3.eth.waitForTransactionReceipt(txn_hash)
     st.write("Receipt is ready. Here it is: ")
     st.write(dict(receipt))
+    
+    # Get most recent order Total 
+    query = "SELECT id, customer_id, order_total FROM Orders ORDER BY id DESC LIMIT 1 OFFSET 0"
+    res = cur.execute(query).fetchall()
+    for row in res:
+        id, customer_id, order_total = row
+        
+    order_tokens = order_total * 1000
+    query = "INSERT INTO Rewards (customer_id, order_id, snak_tokens) VALUES(?,?,?)"
+    params = (customer_id, id, order_tokens)
+    cur.execute(query, params)
+    con.commit()
+
+    st.write(f"You earned: {order_tokens}, eat more and earn more!")
 
 st.sidebar.write("Please add yourself as a customer before placing an order!")
 
