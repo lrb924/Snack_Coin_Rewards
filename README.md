@@ -18,18 +18,20 @@ Welcome to Snack Coin Rewards! This Streamlit-based application enables the user
 * `create_db.sql`: SQL file creating the database framekwork
 * `insert_data.sql`: SQL file containing the queries
 * `snack.db`: Database containing the menu items
-* `app.py`: Python script to run the Streamlit application
+* `app.py`: Python script containing the code that’s associated with the web interface of the application
 * `Images`: Directory containing images of menu itmes and sub directory of application examples
 
 --------------
 
 ## Installation
 
+1. fs
+2. Add your mnemonic seed phrase (which Ganache provides) to the SAMPLE.env file as WEB_PROVIDER_URI. Then rename the file to .env.
 
 
 ## Usage
 
-tk
+Once installed, you can use the contracts and the python script to run thhe Snack Coin Rewards interface through Streamlit. 
 
 ## Examples of Application
 
@@ -37,7 +39,7 @@ tk
 
 ## Challenges, Limitations, and Future Developments
 
-tk
+Unfortunately Streamlit's limitations did not allow us to make all of the connections to the database that we would have liked to make. For example, we were not able to import environment variables such as the contract addresses, so those had to be hard-coded in the python script after deploying the contracts in Remix. If we had more time, one option to change this would be to shift the app to a different framework with more options, such as Django.
 
 ## Team Members
 1. Lara Barger
