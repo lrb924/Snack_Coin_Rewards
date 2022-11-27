@@ -49,7 +49,7 @@ con = sqlite3.connect('snack.db', timeout=10)
 cur = con.cursor()
 
 st.markdown("# Snack Menu")
-st.markdown("## ...")
+st.markdown("""---""")
 st.text("\n")
 st.text("\n")
 
