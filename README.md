@@ -25,8 +25,13 @@ Welcome to Snack Coin Rewards! This Streamlit-based application enables the user
 
 ## Installation
 
-1. fs
-2. Add your mnemonic seed phrase (which Ganache provides) to the SAMPLE.env file as WEB_PROVIDER_URI. Then rename the file to .env.
+1. Clone `Snack_Coin_Rewards` repository to a local drive.
+2. Upload the smart contract files (`SnackCoin.sol` and `SnackMenu.sol`) to Remix IDE. Compile both contracts.
+3. Before deploying the contracts, make sure that “Ganache Provider” is selected as the environment and that the RPC Server from Ganache matches the one in Remix IDE.
+4. Add your mnemonic seed phrase (which Ganache provides as the RPC Server) to the SAMPLE.env file as WEB_PROVIDER_URI. Then rename the file to .env.
+5. Select an account from Ganache in Remix IDE to deploy the contracts.
+6. First, chose the `SmartCoinMenuDeployer` contract from the Contract pulldown.
+7. Fill in the 
 
 
 ## Usage
