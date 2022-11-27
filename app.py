@@ -121,6 +121,8 @@ def display_menu():
 
 display_menu()
 
+st.markdown("""---""")
+
 # Starting an order and adding menu items to cart
 st.markdown("## Order Food")
 st.text("\n")

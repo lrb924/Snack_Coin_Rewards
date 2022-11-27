@@ -4,9 +4,9 @@
 
 ### *Package Requirements and Versions*
 `pip install x` ; where 'x' is the package listed below:
-• `python == 3.10.6`
-• `web3 == 5.31.1`
-• `streamlit == 1.13.0`
+* `python == 3.10.6`
+* `web3 == 5.31.1`
+* `streamlit == 1.13.0`
 
 
 ### *Files Navigation*
