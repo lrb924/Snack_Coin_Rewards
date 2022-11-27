@@ -27,12 +27,12 @@ def load_contract(which_contract):
     # Choose which hard-coded contract to load
     # contract_address = os.getenv("SMART_CONTRACT_DEPLOYED_ADDRESS")
     if which_contract == 'menu':
-        contract_address = '0x6107108a51F2879F15598128AdbC696a0688Cf79'
+        contract_address = '0x90331E26a98070eB0328748B8BDd8c57097952Ea'
         with open(Path("abi-menu.json")) as abi_:
             abi = json.load(abi_)
     
     elif which_contract == 'token':
-        contract_address = '0x6bcfc4442562bF68DA869e2aA87046C7667A1560'
+        contract_address = '0xd77EacA1C78Cab747fD7864CA2bf4B20a5b87229'
         with open(Path("abi-token.json")) as abi_:
             abi = json.load(abi_)
 
