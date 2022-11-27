@@ -4,37 +4,29 @@
 
 ### *Package Requirements and Versions*
 `pip install x` ; where 'x' is the package listed below:
+• `python == 3.10.6`
+• `web3 == 5.31.1`
+• `streamlit == 1.13.0`
+
 
 ### *Files Navigation*
 tk
 
-### *Purpose of Use*
-
-tk
-
 --------------
 
-## Data Pre-Processing/Gathering Steps (Cleaning and Manipulation)
+## Installation
 
 tk
 
-## Visuals and Explanations
+## Usage
 
 tk
 
-## Additional Explanations and Major Findings
+## Examples of Application
 
 tk
 
 ## Challenges, Limitations, and Future Developments
-
-tk
-
-## Conclusion
-
-tk
-
-## References
 
 tk
 
