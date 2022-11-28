@@ -53,16 +53,16 @@ Once installed, you can use the contracts and the python script to run the Snack
 ## Examples of Application
 
 After the application is launched, the user/customer can fill out their information in the sidebar, and then click the "Add Customer" button before moving on to the Snack Menu. <br>
-![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
+![Add Customer](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Add%20Customer%20Sidebar.png)
 
 The customer can then browse the menu items, and scroll down and must click the "Start an Order" button before continuing. <br>
-![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
+![Start an Order](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Start%20an%20Order.png)
 
 Once menu items are added to the cart, the total amount due in eth will display. The customer can then complete their order by clicking on the "Place Order" button and get a receipt and find out how many SNAK tokens they earned. <br>
-![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
+![Place Order](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Place%20Order%20with%20Receipt.png)
 
 Finally, the customer can check their SNAK token balance by going back to the sidebar and clicking on the "Check SNAK Balance" button. <br>
-![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
+![SNAK Balance](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/SNAK%20Balance.png)
 
 ## Challenges, Limitations, and Future Developments
 
