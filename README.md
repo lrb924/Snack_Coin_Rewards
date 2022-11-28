@@ -34,10 +34,17 @@ Welcome to Snack Coin Rewards! This Streamlit-based application enables the user
 7. Fill in the NAME, SYMBOL, and WALLET under the DEPLOY, and then press transact.
 ![Initial Deployer](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Deployer.png)
 8. Open the Deployed Contracts, specifically the `SNACKCOINMENUDEPLOYER`, and call the `snackcoin_menu_address` button and the `snackcoin_token_address` button.
-9. Next, choose the `SnackCoinMenu` contract and paste the `snackcoin_menu_address`.
-![Initial Deployer](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Deployer.png)
-10.  
-
+9. Next, choose the `SnackCoinMenu` contract and paste the `snackcoin_menu_address` in the AT ADDRESS box under the DEPLOY.
+![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
+11. Scroll down and under the Deployed Contracts you will see the `SNACKCOINMENU`.
+12. Next, choose the `SnackCoin` contract and follow the same instructions in step 9, except paste the `snackcoin_token_address` in the AT ADDRESS box under the DEPLOY.
+13. Scroll down and under the Deployed Contracts and you will see the `SNACKCOIN`.
+14. Due to limitations, paste both the `snackcoin_menu_address` and the `snackcoin_token_address` in `app.py`.
+15. Save the updated `app.py` and run the file via Streamlit by running the following code in your bash or terminal: 
+```
+streamlit run app.py
+```
+16. Make sure to fill out the sidebar menu before cotinuing to the Snack Menu.
 
 ## Usage
 
