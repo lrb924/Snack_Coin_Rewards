@@ -5,7 +5,7 @@
 pragma solidity ^0.5.0;
 
 // Import SnackCoin contract
-import "./SnackCoin-lara.sol";
+import "./SnackCoin.sol";
 
 //  Import the following contracts from the OpenZeppelin library:
 //    * Crowdsale
