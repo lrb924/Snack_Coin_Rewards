@@ -64,7 +64,7 @@ Finally, the customer can check their SNAK token balance by going back to the si
 
 Unfortunately Streamlit's limitations did not allow us to make all of the connections to the database that we would have liked to make. For example, we were not able to import environment variables such as the contract addresses, so those had to be hard-coded in the python script after deploying the contracts in Remix IDE. If we had more time, one option to adjust this would be to shift the app to a different framework with more options, such as Django.
 
-Additionally, our biggest challenge with the app is that there is no way (using Streamlit) to completely start a new order with a new customer unless the "Start New Order" button is selected. For example, if the page is refreshed, the order will continue with the last customer's order instead of starting new. Again, this seems to be a Streamlit limitation and if more time allowed, we would adjust and shift the app to a different framework that has more functionality such as this.  
+Additionally, our biggest challenge with the app is that there is no way (using Streamlit) to completely start a new order with a new customer unless the "Start New Order" button is selected. For example, if the page is refreshed, the order will continue with the last customer's order instead of starting new. Again, this seems to be a Streamlit limitation and if more time allowed, we would adjust and shift the app to a different framework that has more functionality.
 
 ## Team Members
 1. Lara Barger
