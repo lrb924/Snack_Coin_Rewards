@@ -52,7 +52,17 @@ Once installed, you can use the contracts and the python script to run the Snack
 
 ## Examples of Application
 
-tk
+After the application is launched, the user/customer can fill out their information in the sidebar, and then click the "Add Customer" button before moving on to the Snack Menu. <br>
+![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
+
+The customer can then browse the menu items, and scroll down and must click the "Start an Order" button before continuing. <br>
+![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
+
+Once menu items are added to the cart, the total amount due in eth will display. The customer can then complete their order by clicking on the "Place Order" button and get a receipt and find out how many SNAK tokens they earned. <br>
+![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
+
+Finally, the customer can check their SNAK token balance by going back to the sidebar and clicking on the "Check SNAK Balance" button. <br>
+![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
 
 ## Challenges, Limitations, and Future Developments
 
