@@ -11,15 +11,11 @@ Welcome to Snack Coin Rewards! This Streamlit-based application enables the user
 * `streamlit == 1.13.0`
 
 ### *Files Navigation*
-* `SnackCoin.sol`: Solidity file containing the token contract
-* `SnackMenu.sol`: Solidity file containing the menu and deployer contracts
-* `abi-menu.json`: JSON file of the abi for the menu contract
-* `abi-token.json`: JSON file of the abi for the token contract
-* `create_db.sql`: SQL file creating the database framekwork
-* `insert_data.sql`: SQL file containing the queries
-* `snack.db`: Database containing the menu items
-* `app.py`: Python script containing the code that’s associated with the web interface of the application
 * `Images`: Directory containing images of menu itmes and sub directory of application examples
+* `Solidity`: Directory containing the the token contract file, the menu and deployer contracts file, and the associated JSON files of the required abi for both contracts.
+* `SQL`: Directory containing the SQL files creating the database framework and the associated queries.
+* `snack.db`: Database containing the completed order information, including the Customers, Food, MenuItems, Menus, OrderItems, Orders, and Rewards
+* `app.py`: Python script containing the code that’s associated with the web interface of the application
 
 --------------
 
@@ -48,7 +44,7 @@ Welcome to Snack Coin Rewards! This Streamlit-based application enables the user
 
 ## Usage
 
-Once installed, you can use the contracts and the python script to run the Snack Coin Rewards interface through Streamlit. The user will be able to add menu items to their order, use eth to pay for the order, and earn SNAK tokens based on the total cost of their order.  
+Once installed, you can use the contracts and the python script to run the Snack Coin Rewards interface through Streamlit. The user will be able to add menu items to their order, use eth to pay for the order, and earn SNAK tokens based on the total cost of their order. And because we used SQLite, we are also able to see the data behind each order through the `snack.db`.
 
 ## Examples of Application
 
