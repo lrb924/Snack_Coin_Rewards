@@ -30,8 +30,13 @@ Welcome to Snack Coin Rewards! This Streamlit-based application enables the user
 3. Before deploying the contracts, make sure that “Ganache Provider” is selected as the environment and that the RPC Server from Ganache matches the one in Remix IDE.
 4. Add your mnemonic seed phrase (which Ganache provides as the RPC Server) to the SAMPLE.env file as WEB_PROVIDER_URI. Then rename the file to .env.
 5. Select an account from Ganache in Remix IDE to deploy the contracts.
-6. First, chose the `SmartCoinMenuDeployer` contract from the Contract pulldown.
-7. Fill in the 
+6. First, choose the `SnackCoinMenuDeployer` contract from the Contract pulldown.
+7. Fill in the NAME, SYMBOL, and WALLET under the DEPLOY, and then press transact.
+![Initial Deployer](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Deployer.png)
+8. Open the Deployed Contracts, specifically the `SNACKCOINMENUDEPLOYER`, and call the `snackcoin_menu_address` button and the `snackcoin_token_address` button.
+9. Next, choose the `SnackCoinMenu` contract and paste the `snackcoin_menu_address`.
+![Initial Deployer](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Deployer.png)
+10.  
 
 
 ## Usage
