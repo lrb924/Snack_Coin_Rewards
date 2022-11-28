@@ -31,19 +31,19 @@ Welcome to Snack Coin Rewards! This Streamlit-based application enables the user
 4. Add your mnemonic seed phrase (which Ganache provides as the RPC Server) to the SAMPLE.env file as WEB_PROVIDER_URI. Then rename the file to .env.
 5. Select an account from Ganache in Remix IDE to deploy the contracts.
 6. First, choose the `SnackCoinMenuDeployer` contract from the Contract pulldown.
-7. Fill in the NAME, SYMBOL, and WALLET under the DEPLOY, and then press transact.
+7. Fill in the NAME, SYMBOL, and WALLET under the DEPLOY, and then press transact. <br>
 ![Initial Deployer](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Deployer.png)
 8. Open the Deployed Contracts, specifically the `SNACKCOINMENUDEPLOYER`, and call the `snackcoin_menu_address` button and the `snackcoin_token_address` button.
-9. Next, choose the `SnackCoinMenu` contract and paste the `snackcoin_menu_address` in the AT ADDRESS box under the DEPLOY.
+9. Next, choose the `SnackCoinMenu` contract and paste the `snackcoin_menu_address` in the AT ADDRESS box under the DEPLOY. <br>
 ![Menu Contract](https://github.com/lrb924/Snack_Coin_Rewards/blob/main/Images/Screenshots/Menu.png)
 11. Scroll down and under the Deployed Contracts you will see the `SNACKCOINMENU`.
 12. Next, choose the `SnackCoin` contract and follow the same instructions in step 9, except paste the `snackcoin_token_address` in the AT ADDRESS box under the DEPLOY.
 13. Scroll down and under the Deployed Contracts and you will see the `SNACKCOIN`.
 14. Due to limitations, paste both the `snackcoin_menu_address` and the `snackcoin_token_address` in `app.py`.
 15. Save the updated `app.py` and run the file via Streamlit by running the following code in your bash or terminal: 
-```
-streamlit run app.py
-```
+    ```
+    streamlit run app.py
+    ```
 16. Make sure to fill out the sidebar menu before cotinuing to the Snack Menu.
 
 ## Usage
