@@ -13,7 +13,13 @@ Welcome to Snack Coin Rewards! This Streamlit-based application enables the user
 ### *Files Navigation*
 * `Images`: Directory containing images of menu itmes and sub directory of application examples
 * `Solidity`: Directory containing the the token contract file, the menu and deployer contracts file, and the associated JSON files of the required abi for both contracts.
+  * `Solidity/SnackCoin.sol`
+  * `Solidity/SnackMenu.sol`
+  * `Solidity/abi-menu.json`
+  * `Solidity/abi-token.json`
 * `SQL`: Directory containing the SQL files creating the database framework and the associated queries.
+  * `SQL/create_db.sql`
+  * `SQL/insert_data.sql`
 * `snack.db`: Database containing the completed order information, including the Customers, Food, MenuItems, Menus, OrderItems, Orders, and Rewards
 * `app.py`: Python script containing the code that’s associated with the web interface of the application
 
