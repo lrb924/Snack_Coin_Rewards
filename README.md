@@ -68,9 +68,11 @@ Finally, the customer can check their SNAK token balance by going back to the si
 
 ## Challenges, Limitations, and Future Developments
 
-Unfortunately Streamlit's limitations did not allow us to make all of the connections to the database that we would have liked to make. For example, we were not able to import environment variables such as the contract addresses, so those had to be hard-coded in the python script after deploying the contracts in Remix IDE. If we had more time, one option to adjust this would be to shift the app to a different framework with more options, such as Django.
+Unfortunately Streamlit's limitations did not allow us to make all of the connections to the database that we would have liked to make. For example, we were not able to import environment variables such as the contract addresses, so those had to be hard-coded in the python script after deploying the contracts in Remix IDE. We were also unable to index customers based on their wallets, and instead had to use customer_id as an index. Despite many attempts, we believe this is another Streamlit limitation. If we had more time, one option to adjust this would be to shift the app to a different framework with more options, such as Django.
 
-Additionally, our biggest challenge with the app is that there is no way (using Streamlit) to completely start a new order with a new customer unless the "Start New Order" button is selected. For example, if the page is refreshed, the order will continue with the last customer's order instead of starting new. Again, this seems to be a Streamlit limitation and if more time allowed, we would adjust and shift the app to a different framework that has more functionality.
+Additionally, another challenge with the app is that there is no way (using Streamlit) for multiple people to interact or order using the app at the same time. If multiple people try to use the app at the same time, the most recent order will combine with the next order that's attempting to complete. This also coincides with the issue that customers are not able to start a new order as a new customer unless the "Start New Order" button is selected. For example, if the page is refreshed, the order will continue with the last customer's order instead of starting new. Again, this seems to be a Streamlit limitation and if more time allowed, we would adjust and shift the app to a different framework that has more functionality. 
+
+If more time allowed, in addition to shifting the app to a different framework, our team would likely move the frontend and the backend to a server, and deploy the contract on the testnet.
 
 ## Team Members
 1. Lara Barger
