@@ -1,0 +1,10 @@
+How to create db
+----------------
+
+In terminal:
+
+sqlite3
+.read create_db.sql
+.read insert_data.sql
+.backup snack.db
+
