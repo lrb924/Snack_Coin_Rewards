@@ -2,13 +2,17 @@
 
 # Imports
 import os
+import sys
 from decimal import Decimal
 import json
 from pathlib import Path
 from dotenv import load_dotenv
 import sqlite3
 from web3 import Web3
+from web3.exceptions import ContractLogicError
 import streamlit as st
+
+from notify import create_message, send_email
 
 # Load .env
 load_dotenv()
@@ -27,12 +31,12 @@ def load_contract(which_contract):
     # Choose which hard-coded contract to load
     # contract_address = os.getenv("SMART_CONTRACT_DEPLOYED_ADDRESS")
     if which_contract == 'menu':
-        contract_address = '0x0c107a0AE2687d52ceCb8f8c7ff76f0AE9A93a8c'
+        contract_address = '0x9AaD3e122D1Fa21452DE07f600CB8CdFC6b92A82'
         with open(Path("./Solidity/abi-menu.json")) as abi_:
             abi = json.load(abi_)
     
     elif which_contract == 'token':
-        contract_address = '0xf09BbA6A2Da28dE0DfDB66df3E655E9592fBD100'
+        contract_address = '0xc773837018e11CEA3936FFDc4D0Ba8A302706ad2'
         with open(Path("./Solidity/abi-token.json")) as abi_:
             abi = json.load(abi_)
 
@@ -56,7 +60,8 @@ st.text("\n")
 # Choose customer wallet
 st.sidebar.markdown("## Please Enter Customer Info:")
 
-wallet = st.sidebar.selectbox(label='Ethereum Wallet: ', options=accounts)
+# Don't allow the first address (contract owner) to be selected
+wallet = st.sidebar.selectbox(label='Ethereum Wallet: ', options=accounts[1:])
 
 # Ask for customer info
 customer_first = st.sidebar.text_input('First Name: ', key=1)
@@ -65,9 +70,6 @@ customer_phone = st.sidebar.text_input('Phone: ', key=3)
 customer_email = st.sidebar.text_input('Email: ', key=4)
 
 if st.sidebar.button('Add Customer'):
-    # Optional instructor lines:
-    # query = f"INSERT INTO Customers VALUES (1, {wallet}, {customer_first}, {customer_last}, {int(customer_phone)}, {str(customer_email)})"
-    # query = f"INSERT INTO Customers VALUES (1, :wallet, :customer_first, :customer_last, :customer_phone, {str(customer_email)})"
 
     # Insert data into database
     query = "INSERT INTO Customers ('wallet', 'first_name', 'last_name', 'phone', 'email') VALUES(?,?,?,?,?)"
@@ -190,8 +192,8 @@ def add_to_order():
             price = menu_items[cart[x][0]][4]
             cart_total = order_total + cart[x][1] * float(price)
 
-            st.markdown("### Order Total in Ether: ")
-            st.write(cart_total)
+            st.markdown("### Order Total: ")
+            st.write(round(cart_total, 4), 'ETH')
 
             # Add most recent order_total to orders database
             query = "UPDATE Orders SET order_total = ? WHERE id = ?"
@@ -227,30 +229,73 @@ if st.button("Place Order"):
     # Show order total amount paid from selected wallet
     st.write(f"Paying {order_total} ETH from wallet: {wallet}")
 
-    # Submit transaction to contract
-    txn_hash = contract.functions.orderSnack(order_total_wei, token_amount).transact({
-        'from': wallet,
-        'value': order_total_wei
-    })
-    receipt = w3.eth.waitForTransactionReceipt(txn_hash)
-    st.write("Receipt is ready. Here it is: ")
-    st.write(dict(receipt))
+    with st.spinner("Please wait for transaction"):
+        # Submit transaction to contract
+        txn_hash = contract.functions.orderSnack().transact({
+            'from': wallet,
+            'value': order_total_wei
+        })
+        receipt = w3.eth.waitForTransactionReceipt(txn_hash)
     
-    # Get most recent order total 
-    query = "SELECT id, customer_id, order_total FROM Orders ORDER BY id DESC LIMIT 1 OFFSET 0"
-    res = cur.execute(query).fetchall()
-    for row in res:
-        id, customer_id, order_total = row
+    if receipt is not None:
     
-    # Add rewards earned to rewards database    
-    order_tokens = order_total * 1000
-    query = "INSERT INTO Rewards (customer_id, order_id, snak_tokens) VALUES(?,?,?)"
-    params = (customer_id, id, order_tokens)
-    cur.execute(query, params)
-    con.commit()
+        st.write("Transaction Complete")
+        st.write("Receipt is ready. Here it is: ")
+        st.write(dict(receipt))
 
-    # Show rewards earned
-    st.write(f"You earned: {order_tokens} SNAK, eat more and earn more!")
+        # Get most recent order total 
+        query = "SELECT id, customer_id, order_total, time FROM Orders ORDER BY id DESC LIMIT 1 OFFSET 0"
+        res = cur.execute(query).fetchall()
+        for row in res:
+            order_id, customer_id, order_total, time = row
+
+        # Get customer info
+        query = "SELECT wallet, first_name, last_name, email FROM Customers WHERE id = ?"
+        params = (customer_id,)
+        res = cur.execute(query, params).fetchall()
+        for row in res:
+            wallet, first_name, last_name, email = row
+
+        customer_info = {
+            'wallet': wallet,
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email
+        }
+
+        food = dict()
+
+        # Get order items
+        query = "SELECT food_id, quantity FROM OrderItems WHERE order_id = ?"
+        params = (order_id,)
+        res = cur.execute(query, params).fetchall()
+        for row in res:
+            food_id, quantity = row
+            if food_id in food.keys():
+                food[food_id][0] += quantity
+            else:
+                food[food_id] = [quantity]
+            
+        # Get food info from Food table
+        query = "SELECT id, name FROM Food WHERE id IN (SELECT food_id from MenuItems WHERE menu_id = 1)"
+        res = cur.execute(query).fetchall()
+        for row in res:
+            food_id, name_ = row
+            if food_id in food.keys():
+                food[food_id].append(name_)
+
+        # Add rewards earned to rewards database    
+        order_tokens = order_total * 1000
+        query = "INSERT INTO Rewards (customer_id, order_id, snak_tokens) VALUES(?,?,?)"
+        params = (customer_id, order_id, order_tokens)
+        cur.execute(query, params)
+        con.commit()
+
+        # Show rewards earned
+        st.write(f"You earned: {round(order_tokens, 1)} SNAK, eat more and earn more!")
+        
+        msg = create_message(customer_info, food, order_id, order_total, order_tokens)
+        send_email(msg)
 
 st.sidebar.write("Please add yourself as a customer before placing an order!")
 
@@ -258,26 +303,69 @@ if st.sidebar.button("Check SNAK Balance"):
 
     # Load SNAK Token Address
     contract = load_contract('token')
-    
-    # Get most recent order info
-    query = "SELECT id, customer_id, order_total FROM Orders ORDER BY id DESC LIMIT 1 OFFSET 0"
-    res = cur.execute(query).fetchall()
-    for row in res:
-        order_id, customer_id, order_total = row
 
-    # Get customer wallet
-    query = "SELECT wallet FROM Customers WHERE id = ?"
-    params = (customer_id,)
-    res = cur.execute(query, params).fetchall()
-    for row in res:
-        wallet = str(row).strip("(,')")
-    
     # Show customer token balance    
     token_balance = contract.functions.balanceOf(wallet).call()
     token_balance /= 10**18
     token_balance = round(token_balance,1)
-    st.sidebar.write(token_balance)
+    st.sidebar.write(token_balance, 'SNAK')
 
 st.sidebar.write("Check your SNAK token balance after placing an order..")
 
+st.sidebar.markdown("""---""")
+st.sidebar.markdown("## Admin Only")
+
+# Choose Owner wallet
+owner_wallet = st.sidebar.selectbox(label='Owner Wallet: ', options=accounts)
+
+# Allow owner to check the contract balance
+if st.sidebar.button("Check Contract Balance"):
+    
+    sys.tracebacklimit = 0
+    
+    # Load SNAK Token Address
+    contract = load_contract('menu')
+    
+    try:
+        contract_balance = contract.functions.CheckBalance().call({
+            'from': owner_wallet
+        })
+        
+        contract_balance = w3.fromWei(Decimal(contract_balance), 'ether')
+    
+        st.sidebar.write(round(contract_balance, 4), 'ETH')
+        
+    except ContractLogicError as e:
+        # st.sidebar.write(ContractLogicError("Are you the owner?"))
+        st.sidebar.write(e)
+
+amount = st.sidebar.number_input("Enter Amount to Withdraw:")
+amount = w3.toWei(Decimal(amount), 'ether')
+
+# Allow owner to withdraw funds from the contract
+if st.sidebar.button("Withdraw"):
+    
+    sys.tracebacklimit = 0
+    
+    # Load SNAK Token Address
+    contract = load_contract('menu')
+    
+    try:
+        with st.spinner("Please wait for transaction"):
+            txn_hash = contract.functions.WithdrawToOwner(amount).transact({
+                'from': owner_wallet
+            })
+            
+            receipt = w3.eth.waitForTransactionReceipt(txn_hash)
+    
+        if receipt is not None:
+            st.sidebar.write("Transaction Complete")
+            st.write("Receipt is ready. Here it is: ")
+            st.write(dict(receipt))
+            
+    except ContractLogicError as e:
+        # st.sidebar.write("Error: Are you the owner?")
+        st.sidebar.write(e)
+
+st.sidebar.markdown("""---""")
 con.close()

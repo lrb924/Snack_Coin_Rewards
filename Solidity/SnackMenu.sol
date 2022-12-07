@@ -15,32 +15,64 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5
 
 contract SnackCoinMenu is Crowdsale, MintedCrowdsale{
     
+    // Holds the wallet to which the customer pays for the order
+    address payable owner;
+
     // Create constructor for SnackCoinMenu
     constructor(
+
         uint rate,
         address payable wallet,
         SnackCoin token
-    ) public Crowdsale(rate, wallet, token) {}
+    
+    ) public Crowdsale(rate, address(this), token) {
+    
+        owner = wallet;
+    
+    }
 
     // Create an event to log submitted orders
-    event NewOrder(uint order_total);
+    event NewOrder();
 
-    // Function that places a new order
-    function orderSnack(uint order_total) public payable{
-
-        // Add if/else for order total & token quantity requirements
-        // e.g.
-        // if amount not enough
-        // requir( x,y )
-        // transfer(from msg.sender to contract owner)
+    // Mints tokens and sends them to the customer
+    function orderSnack() public payable{
 
         // Call the buyTokens function from Crowdsale ERC20
         buyTokens(msg.sender);
 
-        // Log NewOrder event with item details
-        emit NewOrder(order_total);
+        // Log NewOrder event
+        emit NewOrder();
 
     }
+
+    // Permits a function to only be called by the contract owner
+    modifier onlyOwner() {
+        
+        require(msg.sender == owner, "-- You are not the owner of the contract!");
+        _;
+    
+    }
+
+    // Withdraws contract funds to the restaurant's wallet
+    function WithdrawToOwner(uint amount) onlyOwner public{
+        
+        require(address(this).balance > amount, "-- Not enough funds in contract!");
+        require(amount > 0, "-- Can't withdraw amount of 0!");
+
+        // Send ether from the contract to the owner
+        owner.transfer(amount);
+
+    }
+
+    // Allows owner to check the balance of the contract
+    function CheckBalance() public view onlyOwner returns(uint){
+
+        return address(this).balance;
+
+    }
+
+    // Fallback function to make contract payable
+    function() external payable {}
 
 }
 
@@ -51,11 +83,12 @@ contract SnackCoinMenuDeployer{
     // Holds the SnackCoinMenu contract address
     address public snackcoin_menu_address;
 
-    constructor(
-        string memory name,
-        string memory symbol,
-        address payable wallet
-    ) public {
+    constructor() public {
+        
+        string memory name = "SnackCoin";
+        string memory symbol = "SNAK";
+        address payable owner_wallet = msg.sender;
+        uint rate = 1000;
 
         // Create instance of SnackCoin contract & save its address
         // Initial supply is Zero SNAK
@@ -63,7 +96,7 @@ contract SnackCoinMenuDeployer{
         snackcoin_token_address = address(snack_token);
 
         // Create instance of SnackCoinMenu contract & save its address
-        SnackCoinMenu snack_menu = new SnackCoinMenu(1000, wallet, snack_token);
+        SnackCoinMenu snack_menu = new SnackCoinMenu(rate, owner_wallet, snack_token);
         snackcoin_menu_address = address(snack_menu);
 
         // Allow SnackCoinMenu contract to mint SnackCoin
